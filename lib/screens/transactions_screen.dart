@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:second_project/controllers/currencies_controller.dart';
 import '../controllers/transactions_controller.dart';
 import '../core/constant/app_colors.dart';
 import '../core/constant/app_icons.dart';
@@ -60,6 +61,7 @@ class TransactionsScreen extends StatelessWidget {
             ExpenseInformation(
               expenseMoney: provider.moneyDetails['total']['expense'] as double,
               incomeMoney: provider.moneyDetails['total']['income'] as double,
+              code: Provider.of<CurrenciesController>(context).code.toString(),
             ),
             Expanded(
               child: ListView.builder(
@@ -72,6 +74,9 @@ class TransactionsScreen extends StatelessWidget {
                       amount: provider.allTransactions[index].amount! as double,
                       date: provider.allTransactions[index].date! as int,
                       mode: provider.allTransactions[index].tranType! as int,
+                      code: Provider.of<CurrenciesController>(context)
+                          .code
+                          .toString(),
                     ),
                     const Divider(thickness: 0.5),
                   ],

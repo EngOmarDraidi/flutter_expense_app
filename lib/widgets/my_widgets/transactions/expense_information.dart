@@ -6,9 +6,13 @@ import 'package:second_project/widgets/flutter_widgets/custom_text.dart';
 class ExpenseInformation extends StatelessWidget {
   final double expenseMoney;
   final double incomeMoney;
+  final String code;
 
   const ExpenseInformation(
-      {required this.expenseMoney, required this.incomeMoney, super.key});
+      {required this.expenseMoney,
+      required this.incomeMoney,
+      required this.code,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,7 @@ class ExpenseInformation extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             CustomText(
-              text: '${expenseMoney.toStringAsFixed(2)} USD',
+              text: '${expenseMoney.toStringAsFixed(2)} $code',
               fontWeight: FontWeight.w500,
               color: Colors.red,
             ),
@@ -37,7 +41,7 @@ class ExpenseInformation extends StatelessWidget {
               ),
             ),
             CustomText(
-              text: '${incomeMoney.toStringAsFixed(2)} USD',
+              text: '${incomeMoney.toStringAsFixed(2)} $code',
               fontWeight: FontWeight.w500,
               color: AppColors.accentColor,
             ),

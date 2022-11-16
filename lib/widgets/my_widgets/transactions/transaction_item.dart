@@ -10,6 +10,7 @@ class TransactionItem extends StatelessWidget {
   final double amount;
   final int date;
   final int mode;
+  final String code;
 
   const TransactionItem(
       {required this.title,
@@ -17,6 +18,7 @@ class TransactionItem extends StatelessWidget {
       required this.amount,
       required this.date,
       required this.mode,
+      required this.code,
       super.key});
 
   @override
@@ -37,7 +39,7 @@ class TransactionItem extends StatelessWidget {
         color: Colors.grey.shade400,
       ),
       trailing: CustomText(
-        text: '${amount.toStringAsFixed(2)} USD',
+        text: '${amount.toStringAsFixed(2)} $code',
         fontWeight: FontWeight.w500,
         fontSize: 15,
         color: mode == 0 ? Colors.red : AppColors.accentColor,

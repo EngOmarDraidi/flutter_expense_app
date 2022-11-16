@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../main.dart';
 import '../../../controllers/currencies_controller.dart';
 import '../../../models/model/currency.dart';
 import '../../../core/constant/data.dart';
@@ -33,22 +32,19 @@ class _CurrenciesListState extends State<CurrenciesList> {
   @override
   Widget build(BuildContext context) {
     final CurrenciesController provider =
-        Provider.of<CurrenciesController>(context, listen: false);
+        Provider.of<CurrenciesController>(context);
 
     return Expanded(
       child: ListView.separated(
         padding: const EdgeInsets.only(top: 10),
         itemBuilder: (context, index) {
-          print(currencyCode);
-          provider.index = currencyCode;
-
           return CurrencyItem(
             index: index,
             code: listOfCurrencies[index].code!,
             country: listOfCurrencies[index].country!,
             onTap: () async {
-              print(index);
-              await provider.changeCurrency(index);
+              await provider
+                  .changeCurrencySelected(listOfCurrencies[index].code!);
             },
           );
         },

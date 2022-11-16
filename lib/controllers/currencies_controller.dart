@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import '../core/helper/shared_preferences_helper.dart';
 
 class CurrenciesController extends ChangeNotifier {
-  int? index;
+  String? code;
+  String? currencySelected;
+  bool isLoading = true;
 
-  Future<void> changeCurrency(int indexCurrency) async {
-    index = indexCurrency;
-    print(index);
-    bool i = await sharedPreferencesApp.setData('currency_code', indexCurrency);
-    print(i);
+  changeCurrencySelected(String codeSelected) {
+    currencySelected = codeSelected;
+    notifyListeners();
+  }
+
+  Future<void> changeCurrency() async {
+    print(currencySelected);
+    code = currencySelected;
+    await SharedPreferencesApp.sharedPreferencesApp
+        .setData('currency_code', currencySelected!);
     notifyListeners();
   }
 
   void getCurrency() {
-    notifyListeners();
+    currencySelected = code = SharedPreferencesApp.sharedPreferencesApp
+        .getDate('currency_code') as String;
   }
 }

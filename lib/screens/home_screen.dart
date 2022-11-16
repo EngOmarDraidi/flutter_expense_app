@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:second_project/controllers/currencies_controller.dart';
+import 'package:second_project/core/helper/shared_preferences_helper.dart';
 import '../controllers/categories_controller.dart';
 import '../controllers/transactions_controller.dart';
 import '../core/constant/app_colors.dart';
@@ -19,10 +21,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final NavigatorState navigator = Navigator.of(context);
+    final CurrenciesController currencyProvider =
+        Provider.of<CurrenciesController>(context);
 
     return Consumer<TransactionsController>(
         builder: (context, provider, child) {
       if (provider.isLoading) {
+        currencyProvider.getCurrency();
         provider.getData();
         return const Center(
           child: CircularProgressIndicator(
@@ -72,6 +77,7 @@ class HomeScreen extends StatelessWidget {
                     [provider.tranFilter]['expense'] as double,
                 incomeMoney: provider.moneyDetails['details']
                     [provider.tranFilter]['income'] as double,
+                currencyCode: currencyProvider.code.toString(),
               ),
             ),
             if (provider.expenseTransactions.isNotEmpty)

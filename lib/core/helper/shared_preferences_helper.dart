@@ -1,23 +1,23 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-SharedPreferencesApp sharedPreferencesApp = SharedPreferencesApp._();
-
 class SharedPreferencesApp {
   SharedPreferencesApp._();
+  static SharedPreferencesApp sharedPreferencesApp = SharedPreferencesApp._();
 
   SharedPreferences? _sharedPreferences;
+  String? currencyCode;
 
   initSharedPred() async {
     _sharedPreferences = await SharedPreferences.getInstance();
-    await _sharedPreferences!.setInt('currency_code', 149);
   }
 
-  Object? getDate(String key) {
-    return _sharedPreferences!.getInt(key);
+  String? getDate(String key) {
+    currencyCode = _sharedPreferences!.getString(key);
+    return currencyCode;
   }
 
-  Future<bool> setData(String key, int data) async {
-    return await _sharedPreferences!.setInt(key, data);
+  Future<bool> setData(String key, String data) async {
+    return await _sharedPreferences!.setString(key, data);
   }
 
   Future<bool> deleteData(String key) async {

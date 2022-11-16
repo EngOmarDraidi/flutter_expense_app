@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:second_project/controllers/currencies_controller.dart';
+import 'package:second_project/core/helper/shared_preferences_helper.dart';
 import '../../flutter_widgets/custom_text.dart';
 
 class CurrencyItem extends StatelessWidget {
@@ -39,7 +40,8 @@ class CurrencyItem extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            if (index == Provider.of<CurrenciesController>(context).index)
+            if (code ==
+                Provider.of<CurrenciesController>(context).currencySelected)
               const Icon(Icons.check),
           ],
         ),

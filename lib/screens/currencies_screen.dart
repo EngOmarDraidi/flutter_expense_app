@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:second_project/controllers/currencies_controller.dart';
 import '../core/constant/app_colors.dart';
 import '../widgets/flutter_widgets/custom_app_bar.dart';
 import '../widgets/flutter_widgets/custom_container.dart';
@@ -30,7 +32,13 @@ class CurrenciesScreen extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Provider.of<CurrenciesController>(context, listen: false)
+                  .changeCurrency();
+              pageController!.animateToPage(3,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.linear);
+            },
             child: const CustomText(
               text: 'Save',
               color: Colors.white,

@@ -22,9 +22,8 @@ int? currencyCode;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await sharedPreferencesApp.initSharedPred();
+  await SharedPreferencesApp.sharedPreferencesApp.initSharedPred();
   // await SqliteHelper.sqliteHelper.insertInitialCategpry(categories);
-  currencyCode = sharedPreferencesApp.getDate('currency_code') as int;
   initializeDateFormatting().then(
     (value) => runApp(const ExpenseApp()),
   );

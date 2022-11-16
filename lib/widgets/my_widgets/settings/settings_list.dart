@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:second_project/controllers/currencies_controller.dart';
 import 'package:second_project/widgets/flutter_widgets/custom_container.dart';
 import 'settings_item.dart';
 
@@ -12,11 +14,14 @@ class SettingsList extends StatelessWidget {
     return Column(
       children: [
         SettingsItem(
-            onTap: () => pageController.animateToPage(4,
+          onTap: () {
+            pageController.animateToPage(4,
                 duration: const Duration(milliseconds: 250),
-                curve: Curves.linear),
-            title: 'Currency',
-            choice: 'USD'),
+                curve: Curves.linear);
+          },
+          title: 'Currency',
+          choice: Provider.of<CurrenciesController>(context).code.toString(),
+        ),
         const CustomContainer(
           color: Colors.white,
           child: Divider(thickness: 0.5),
