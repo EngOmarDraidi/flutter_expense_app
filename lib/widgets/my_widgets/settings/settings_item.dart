@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../flutter_widgets/custom_container.dart';
 import '../../flutter_widgets/custom_text.dart';
 
@@ -27,7 +28,7 @@ class SettingsItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-              text: title,
+              text: title.tr(),
               fontWeight: FontWeight.w500,
               fontSize: 15,
             ),

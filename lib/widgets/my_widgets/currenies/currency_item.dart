@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:second_project/controllers/currencies_controller.dart';
-import 'package:second_project/core/helper/shared_preferences_helper.dart';
+import '../../../controllers/currencies_controller.dart';
 import '../../flutter_widgets/custom_text.dart';
 
 class CurrencyItem extends StatelessWidget {

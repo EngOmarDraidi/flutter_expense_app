@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../core/constant/app_colors.dart';
 import '../core/constant/app_icons.dart';
 import '../widgets/flutter_widgets/custom_app_bar.dart';
@@ -15,13 +16,15 @@ class IconsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: CustomAppBar(
-        title: 'Icons',
+        title: 'Icons'.tr(),
         leading: IconButton(
           onPressed: () {
             navigator.pop();
           },
           icon: SvgPicture.asset(
-            AppIcons.backArrowIcon,
+            context.locale.languageCode == 'ar'
+                ? AppIcons.forwardArrowIcon
+                : AppIcons.backArrowIcon,
             color: Colors.white,
           ),
         ),

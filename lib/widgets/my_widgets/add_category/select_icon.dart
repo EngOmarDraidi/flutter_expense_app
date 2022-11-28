@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:second_project/controllers/icons_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../../../controllers/icons_controller.dart';
 import '../../../core/constant/app_colors.dart';
 import '../../../core/constant/app_icons.dart';
 import '../../../core/constant/app_routes.dart';
@@ -25,8 +26,8 @@ class SelectIcon extends StatelessWidget {
       color: Colors.white,
       child: Row(
         children: [
-          const CustomText(
-            text: 'Icon',
+          CustomText(
+            text: 'Icon'.tr(),
             color: AppColors.primaryColor,
             fontSize: 15,
           ),
@@ -42,7 +43,9 @@ class SelectIcon extends StatelessWidget {
           const SizedBox(width: 15),
           CustomContainer(
             child: SvgPicture.asset(
-              AppIcons.forwardArrowIcon,
+              context.locale.languageCode == 'ar'
+                  ? AppIcons.backArrowIcon
+                  : AppIcons.forwardArrowIcon,
               width: 15,
               color: AppColors.primaryColor,
             ),

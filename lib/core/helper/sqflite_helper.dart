@@ -28,7 +28,7 @@ class SqliteHelper {
         await db.execute('''
           CREATE TABLE ${AppDatabase.transactionsTable}(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            date INTEGER,
+            date VARCHAR(12),
             amount DOUBLE,
             category_id INTEGER,
             note VARCHAR(255),
@@ -46,19 +46,46 @@ class SqliteHelper {
   }
 
   deleteDB() async {
+    await connectToDatabase();
+    _database!.close();
     final Directory directory = await getApplicationDocumentsDirectory();
     await databaseFactory.deleteDatabase(directory.path);
   }
 
   Future<List<Map<String, dynamic>>> getData(String table,
-      [String? where, List<Object?>? whereArgs]) async {
+      {String? where, List<Object?>? whereArgs, String? groupBy}) async {
     await connectToDatabase();
+
+    if (table == AppDatabase.transactionsTable) {
+      return _database!.rawQuery('''
+      SELECT  tr.id, date, tr.amount amount, category_id, cat.name, cat.icon, cat.tran_type, note
+      FROM ${AppDatabase.transactionsTable} AS tr
+      INNER JOIN ${AppDatabase.categoriesTable} AS cat
+      ON cat.id = tr.category_id;
+      ''');
+    }
 
     return _database!.query(
       table,
       where: where,
       whereArgs: whereArgs,
+      groupBy: groupBy,
     );
+  }
+
+  Future<List<Map<String, dynamic>>> getDataByGroup(String table,
+      {String? where, List<Object?>? whereArgs, String? groupBy}) async {
+    await connectToDatabase();
+
+    return _database!.rawQuery(
+        '''SELECT tr.id, date, SUM(tr.amount) AS amount, category_id, cat.name, cat.icon, cat.tran_type, note,
+          CAST((julianday('now')) - julianday(tr.date) as int) AS dateDiff
+          FROM ${AppDatabase.transactionsTable} AS tr
+          INNER JOIN ${AppDatabase.categoriesTable} AS cat
+          ON cat.id = tr.category_id
+          $where
+          GROUP BY category_id, cat.tran_type;
+          ''');
   }
 
   Future<List<Map<String, Object?>>> joinQuery() async {

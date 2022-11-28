@@ -1,6 +1,7 @@
 class AppIcons {
   static const String _root = 'assets/icons';
 
+  static const String logo = '$_root/logo.svg';
   static const String addIcon = '$_root/add_icon.svg';
   static const String clothesIcon = '$_root/clothes_icon.svg';
   static const String eatingIcon = '$_root/eating_icon.svg';

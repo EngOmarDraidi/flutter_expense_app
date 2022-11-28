@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:second_project/controllers/currencies_controller.dart';
-import 'package:second_project/widgets/flutter_widgets/custom_container.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../../../controllers/main_screen_controller.dart';
+import '../../../controllers/currencies_controller.dart';
+import '../../../widgets/flutter_widgets/custom_container.dart';
 import 'settings_item.dart';
 
 class SettingsList extends StatelessWidget {
@@ -26,10 +29,44 @@ class SettingsList extends StatelessWidget {
           color: Colors.white,
           child: Divider(thickness: 0.5),
         ),
-        const SettingsItem(
-          onTap: null,
+        SettingsItem(
+          onTap: () => showCupertinoModalPopup(
+            context: context,
+            builder: (context) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                    if (context.locale.languageCode != 'ar') {
+                      context.setLocale(const Locale('ar'));
+                      Provider.of<MainScreenController>(context, listen: false)
+                          .update();
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('العربية'),
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () {
+                    if (context.locale.languageCode != 'en') {
+                      context.setLocale(const Locale('en'));
+                      Provider.of<MainScreenController>(context, listen: false)
+                          .update();
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('English'),
+                ),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                child: const Text('Cancel').tr(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ),
           title: 'Language',
-          choice: 'English',
+          choice: context.locale.languageCode == 'ar' ? 'العربية' : 'English',
         ),
       ],
     );

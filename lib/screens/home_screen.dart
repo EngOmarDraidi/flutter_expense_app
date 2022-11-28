@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:second_project/controllers/currencies_controller.dart';
-import 'package:second_project/core/helper/shared_preferences_helper.dart';
+import '../controllers/currencies_controller.dart';
 import '../controllers/categories_controller.dart';
 import '../controllers/transactions_controller.dart';
 import '../core/constant/app_colors.dart';
@@ -26,9 +25,9 @@ class HomeScreen extends StatelessWidget {
 
     return Consumer<TransactionsController>(
         builder: (context, provider, child) {
-      if (provider.isLoading) {
+      if (provider.isFinishCauculate) {
         currencyProvider.getCurrency();
-        provider.getData();
+        provider.getAllTransactions();
         return const Center(
           child: CircularProgressIndicator(
             color: AppColors.primaryColor,
@@ -80,9 +79,11 @@ class HomeScreen extends StatelessWidget {
                 currencyCode: currencyProvider.code.toString(),
               ),
             ),
-            if (provider.expenseTransactions.isNotEmpty)
+            if (provider
+                .filterTransactions[provider.tranFilter]['expense']!.isNotEmpty)
               const SizedBox(height: 10),
-            if (provider.expenseTransactions.isNotEmpty)
+            if (provider
+                .filterTransactions[provider.tranFilter]['expense']!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SectionTitle(
@@ -95,14 +96,18 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
-            if (provider.expenseTransactions.isNotEmpty)
+            if (provider
+                .filterTransactions[provider.tranFilter]['expense']!.isNotEmpty)
               const SizedBox(height: 10),
-            if (provider.expenseTransactions.isNotEmpty)
+            if (provider
+                .filterTransactions[provider.tranFilter]['expense']!.isNotEmpty)
               CustomContainer(
                 height: 140,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemCount: provider.expenseTransactions.length,
+                  itemCount: (provider.filterTransactions[provider.tranFilter]
+                          ['expense'] as List)
+                      .length,
                   itemBuilder: (context, index) => Row(
                     children: [
                       if (index == 0)
@@ -111,12 +116,24 @@ class HomeScreen extends StatelessWidget {
                         ),
                       SectionExpense(
                         categoryName:
-                            provider.expenseTransactions[index].categoryName!,
-                        icon: provider.expenseTransactions[index].categoryIcon!,
-                        amount: provider.expenseTransactions[index].amount!,
+                            (provider.filterTransactions[provider.tranFilter]
+                                    ['expense'] as List)[index]
+                                .categoryName!,
+                        icon: (provider.filterTransactions[provider.tranFilter]
+                                ['expense'] as List)[index]
+                            .categoryIcon!,
+                        amount:
+                            (provider.filterTransactions[provider.tranFilter]
+                                    ['expense'] as List)[index]
+                                .amount!,
+                        currencyCode: currencyProvider.code.toString(),
                         mode: 0,
                       ),
-                      if (index == provider.expenseTransactions.length - 1)
+                      if (index ==
+                          (provider.filterTransactions[provider.tranFilter]
+                                      ['expense'] as List)
+                                  .length -
+                              1)
                         const SizedBox(
                           width: 20,
                         ),
@@ -126,9 +143,11 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(width: 15),
                 ),
               ),
-            if (provider.incomeTransactions.isNotEmpty)
+            if (provider
+                .filterTransactions[provider.tranFilter]['income']!.isNotEmpty)
               const SizedBox(height: 10),
-            if (provider.incomeTransactions.isNotEmpty)
+            if (provider
+                .filterTransactions[provider.tranFilter]['income']!.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SectionTitle(
@@ -141,14 +160,18 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               ),
-            if (provider.incomeTransactions.isNotEmpty)
+            if (provider
+                .filterTransactions[provider.tranFilter]['income']!.isNotEmpty)
               const SizedBox(height: 10),
-            if (provider.incomeTransactions.isNotEmpty)
+            if (provider
+                .filterTransactions[provider.tranFilter]['income']!.isNotEmpty)
               CustomContainer(
                 height: 140,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemCount: provider.incomeTransactions.length,
+                  itemCount: (provider.filterTransactions[provider.tranFilter]
+                          ['income'] as List)
+                      .length,
                   itemBuilder: (context, index) => Row(
                     children: [
                       if (index == 0)
@@ -157,12 +180,24 @@ class HomeScreen extends StatelessWidget {
                         ),
                       SectionExpense(
                         categoryName:
-                            provider.incomeTransactions[index].categoryName!,
-                        icon: provider.incomeTransactions[index].categoryIcon!,
-                        amount: provider.incomeTransactions[index].amount!,
+                            (provider.filterTransactions[provider.tranFilter]
+                                    ['income'] as List)[index]
+                                .categoryName!,
+                        icon: (provider.filterTransactions[provider.tranFilter]
+                                ['income'] as List)[index]
+                            .categoryIcon!,
+                        amount:
+                            (provider.filterTransactions[provider.tranFilter]
+                                    ['income'] as List)[index]
+                                .amount!,
+                        currencyCode: currencyProvider.code.toString(),
                         mode: 1,
                       ),
-                      if (index == provider.incomeTransactions.length - 1)
+                      if (index ==
+                          (provider.filterTransactions[provider.tranFilter]
+                                      ['income'] as List)
+                                  .length -
+                              1)
                         const SizedBox(
                           width: 20,
                         ),

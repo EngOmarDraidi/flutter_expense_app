@@ -1,6 +1,6 @@
 class Transaction {
   num? id;
-  num? date;
+  String? date;
   num? amount;
   num? categoryId;
   String? categoryName;

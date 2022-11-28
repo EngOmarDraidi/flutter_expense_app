@@ -9,11 +9,13 @@ class SectionExpense extends StatelessWidget {
   final String icon;
   final num amount;
   final int mode;
+  final String currencyCode;
 
   const SectionExpense({
     required this.categoryName,
     required this.icon,
     required this.amount,
+    required this.currencyCode,
     required this.mode,
     super.key,
   });
@@ -22,7 +24,7 @@ class SectionExpense extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomContainer(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 19),
       borderRadius: 10,
       child: Column(
         children: [
@@ -49,7 +51,7 @@ class SectionExpense extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           CustomText(
-            text: '$amount USD',
+            text: '$amount $currencyCode',
             fontWeight: FontWeight.w400,
           ),
         ],

@@ -7,7 +7,8 @@ class CalendarController extends ChangeNotifier {
   final bool todaySelected = true;
 
   changeTransactionFilterDate(int index) {
-    transactionFilterDate = Jiffy().add(months: index).dateTime;
+    transactionFilterDate =
+        Jiffy(transactionFilterDate).add(months: index).dateTime;
     notifyListeners();
   }
 

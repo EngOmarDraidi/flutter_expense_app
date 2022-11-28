@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../core/constant/app_colors.dart';
 import '../../flutter_widgets/custom_container.dart';
 import '../../flutter_widgets/custom_text.dart';
@@ -30,15 +31,16 @@ class MainExpenseInformation extends StatelessWidget {
               right: BorderSide(color: Colors.grey.shade200),
               bottom: BorderSide(color: Colors.grey.shade200),
             ),
-            padding: const EdgeInsets.only(left: 15, top: 15),
+            padding: const EdgeInsets.only(left: 15, top: 15, right: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomContainer(
+                CustomContainer(
                   child: CustomText(
-                    text: 'Expense',
+                    text: 'Expense'.tr(),
                     color: Colors.red,
                     fontSize: 13,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(
@@ -53,17 +55,18 @@ class MainExpenseInformation extends StatelessWidget {
             ),
           ),
           CustomContainer(
-            padding: const EdgeInsets.only(left: 15, top: 15),
+            padding: const EdgeInsets.only(left: 15, top: 15, right: 15),
             border: Border(
               bottom: BorderSide(color: Colors.grey.shade200),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomText(
-                  text: 'Income',
+                CustomText(
+                  text: 'Income'.tr(),
                   color: AppColors.accentColor,
                   fontSize: 13,
+                  fontWeight: FontWeight.bold,
                 ),
                 const SizedBox(
                   height: 5,
@@ -77,13 +80,14 @@ class MainExpenseInformation extends StatelessWidget {
             ),
           ),
           CustomContainer(
-            padding: const EdgeInsets.only(left: 15, top: 15),
+            padding: const EdgeInsets.only(left: 15, top: 15, right: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomText(
-                  text: 'Balance',
+                CustomText(
+                  text: 'Balance'.tr(),
                   fontSize: 13,
+                  fontWeight: FontWeight.bold,
                 ),
                 const SizedBox(
                   height: 5,

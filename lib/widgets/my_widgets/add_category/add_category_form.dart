@@ -17,7 +17,7 @@ class AddCategoryForm extends StatelessWidget {
       child: Column(
         children: [
           CustomTextFormField(
-            title: 'name',
+            title: 'Name',
             textEditingController: provider.categoryName,
           ),
           const SizedBox(

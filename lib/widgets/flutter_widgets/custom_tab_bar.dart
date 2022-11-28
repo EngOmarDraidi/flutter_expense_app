@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../core/constant/app_colors.dart';
 
 class CustomTapBar extends StatefulWidget {
@@ -42,7 +43,7 @@ class _CustomTapBarState extends State<CustomTapBar>
         labelColor: Colors.white,
         unselectedLabelColor: AppColors.primaryColor,
         onTap: widget.onTap,
-        tabs: widget.listOfTab.map((e) => Tab(text: e)).toList(),
+        tabs: widget.listOfTab.map((e) => Tab(text: e.tr())).toList(),
       ),
     );
   }

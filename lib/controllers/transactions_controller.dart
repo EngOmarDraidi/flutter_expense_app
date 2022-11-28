@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../core/constant/app_db.dart';
 import '../core/functions/functions.dart';
 import '../core/services/app_states.dart';
@@ -22,8 +24,12 @@ class TransactionsController extends ChangeNotifier with DBFunctions {
   bool isLoading = true;
   bool isFinishCauculate = true;
   int tranFilter = 0;
+  final List<Transaction> listFilterTran = [];
+  final List<Transaction> dailyTrans = [];
+  final List<Transaction> monthlyTrans = [];
+  final List<Transaction> yearlyTrans = [];
 
-  final Map<String, dynamic> moneyDetails = {
+  Map<String, dynamic> moneyDetails = {
     'total': {'expense': 0.0, 'income': 0.0},
     'details': [
       {'expense': 0.0, 'income': 0.0},
@@ -31,94 +37,89 @@ class TransactionsController extends ChangeNotifier with DBFunctions {
       {'expense': 0.0, 'income': 0.0},
     ],
   };
-  final List<Transaction> _allTransactions = [];
-  List<Transaction> _expenseTransactions = [];
-  List<Transaction> _incomeTransactions = [];
+  List<Transaction> _allTransactions = [];
+  List<Map<String, List<Transaction>>> _filterTransactions = [
+    {'expense': [], 'income': []},
+    {'expense': [], 'income': []},
+    {'expense': [], 'income': []},
+  ];
 
   List<Transaction> get allTransactions => _allTransactions;
+  List<Map<String, List<Transaction>>> get filterTransactions =>
+      _filterTransactions;
 
-  List<Transaction> get expenseTransactions {
-    final DateTime dateFilter = DateTime.now();
+  Future<void> getAllTransactions() async {
+    _filterTransactions = [
+      {'expense': [], 'income': []},
+      {'expense': [], 'income': []},
+      {'expense': [], 'income': []}
+    ];
+    moneyDetails = {
+      'total': {'expense': 0.0, 'income': 0.0},
+      'details': [
+        {'expense': 0.0, 'income': 0.0},
+        {'expense': 0.0, 'income': 0.0},
+        {'expense': 0.0, 'income': 0.0},
+      ],
+    };
 
-    if (tranFilter == 0) {
-      return _expenseTransactions.where((element) {
-        final DateTime tranDate =
-            DateTime.fromMillisecondsSinceEpoch(element.date as int);
+    final List<Map<String, dynamic>> dailyData = await SqliteHelper.sqliteHelper
+        .getDataByGroup(AppDatabase.transactionsTable,
+            where: 'WHERE dateDiff < 1');
 
-        final int diff = dateFilter.difference(tranDate).inDays;
+    final List<Map<String, dynamic>> monthlyData = await SqliteHelper
+        .sqliteHelper
+        .getDataByGroup(AppDatabase.transactionsTable,
+            where: 'WHERE dateDiff <= 31');
 
-        if (diff == 0) {
-          return true;
-        }
-        return false;
-      }).toList();
-    } else if (tranFilter == 1) {
-      return _expenseTransactions.where((element) {
-        final DateTime tranDate =
-            DateTime.fromMillisecondsSinceEpoch(element.date as int);
+    final List<Map<String, dynamic>> yearlyData = await SqliteHelper
+        .sqliteHelper
+        .getDataByGroup(AppDatabase.transactionsTable,
+            where: 'WHERE dateDiff <= 365');
 
-        final int diff = dateFilter.difference(tranDate).inDays;
-
-        if (diff <= 30) {
-          return true;
-        }
-        return false;
-      }).toList();
-    } else {
-      return _expenseTransactions.where((element) {
-        final DateTime tranDate =
-            DateTime.fromMillisecondsSinceEpoch(element.date as int);
-
-        final int diff = dateFilter.difference(tranDate).inDays;
-
-        if (diff <= 365) {
-          return true;
-        }
-        return false;
-      }).toList();
+    for (var tran in dailyData) {
+      if (tran['tran_type'] == 0) {
+        moneyDetails['details'][0]['expense'] =
+            moneyDetails['details'][0]['expense'] + tran['amount'];
+        (_filterTransactions[0]['expense'] as List)
+            .add(Transaction.fromMap(tran));
+      } else {
+        moneyDetails['details'][0]['income'] =
+            moneyDetails['details'][0]['income'] + tran['amount'];
+        (_filterTransactions[0]['income'] as List)
+            .add(Transaction.fromMap(tran));
+      }
     }
-  }
-
-  List<Transaction> get incomeTransactions {
-    final DateTime dateFilter = DateTime.now();
-
-    if (tranFilter == 0) {
-      return _incomeTransactions.where((element) {
-        final DateTime tranDate =
-            DateTime.fromMillisecondsSinceEpoch(element.date as int);
-
-        final int diff = dateFilter.difference(tranDate).inDays;
-
-        if (diff == 0) {
-          return true;
-        }
-        return false;
-      }).toList();
-    } else if (tranFilter == 1) {
-      return _incomeTransactions.where((element) {
-        final DateTime tranDate =
-            DateTime.fromMillisecondsSinceEpoch(element.date as int);
-
-        final int diff = dateFilter.difference(tranDate).inDays;
-
-        if (diff <= 30) {
-          return true;
-        }
-        return false;
-      }).toList();
-    } else {
-      return _incomeTransactions.where((element) {
-        final DateTime tranDate =
-            DateTime.fromMillisecondsSinceEpoch(element.date as int);
-
-        final int diff = dateFilter.difference(tranDate).inDays;
-
-        if (diff <= 365) {
-          return true;
-        }
-        return false;
-      }).toList();
+    for (var tran in monthlyData) {
+      if (tran['tran_type'] == 0) {
+        moneyDetails['details'][1]['expense'] =
+            moneyDetails['details'][1]['expense'] + tran['amount'];
+        (_filterTransactions[1]['expense'] as List)
+            .add(Transaction.fromMap(tran));
+      } else {
+        moneyDetails['details'][1]['income'] =
+            moneyDetails['details'][1]['income'] + tran['amount'];
+        (_filterTransactions[1]['income'] as List)
+            .add(Transaction.fromMap(tran));
+      }
     }
+
+    for (var tran in yearlyData) {
+      if (tran['tran_type'] == 0) {
+        moneyDetails['details'][2]['expense'] =
+            moneyDetails['details'][2]['expense'] + tran['amount'];
+        (_filterTransactions[2]['expense'] as List)
+            .add(Transaction.fromMap(tran));
+      } else {
+        moneyDetails['details'][2]['income'] =
+            moneyDetails['details'][2]['income'] + tran['amount'];
+        (_filterTransactions[2]['income'] as List)
+            .add(Transaction.fromMap(tran));
+      }
+    }
+
+    isFinishCauculate = false;
+    notifyListeners();
   }
 
   Future<bool> checkForm() async {
@@ -165,6 +166,7 @@ class TransactionsController extends ChangeNotifier with DBFunctions {
   clearData() {
     note.clear();
     amount.clear();
+    categorySelected = 0;
     categoryId = 0;
     categoryTitle = 'Not Selected';
     categorySelected = -1;
@@ -176,57 +178,29 @@ class TransactionsController extends ChangeNotifier with DBFunctions {
 
   @override
   Future<void> getData() async {
-    final DateTime dateTime = DateTime.now();
-    _expenseTransactions = [];
-    _incomeTransactions = [];
+    _allTransactions = [];
+    moneyDetails['total'] = {'expense': 0.0, 'income': 0.0};
 
-    final List<Map<String, dynamic>> result =
-        await SqliteHelper.sqliteHelper.joinQuery();
+    final data =
+        await SqliteHelper.sqliteHelper.getData(AppDatabase.transactionsTable);
 
-    for (var tran in result) {
-      Transaction newTran = Transaction.fromMap(tran);
-      final int days = dateTime
-          .difference(DateTime.fromMillisecondsSinceEpoch(newTran.date as int))
-          .inDays;
-
-      if (newTran.tranType == 0) {
+    for (var tran in data) {
+      if (tran['tran_type'] == 0) {
         moneyDetails['total']['expense'] =
-            moneyDetails['total']['expense'] + newTran.amount;
-
-        if (days == 0) {
-          moneyDetails['details'][0]['expense'] =
-              moneyDetails['details'][0]['expense']! + newTran.amount!;
-        }
-        if (days <= 30) {
-          moneyDetails['details'][1]['expense'] =
-              moneyDetails['details'][1]['expense']! + newTran.amount!;
-        }
-        if (days <= 365) {
-          moneyDetails['details'][2]['expense'] =
-              moneyDetails['details'][2]['expense']! + newTran.amount!;
-        }
-        _expenseTransactions.add(newTran);
+            moneyDetails['total']['expense'] + tran['amount'];
       } else {
         moneyDetails['total']['income'] =
-            moneyDetails['total']['income'] + newTran.amount;
-
-        if (days == 0) {
-          moneyDetails['details'][0]['income'] =
-              moneyDetails['details'][0]['income']! + newTran.amount!;
-        }
-        if (days <= 30) {
-          moneyDetails['details'][1]['income'] =
-              moneyDetails['details'][1]['income']! + newTran.amount!;
-        }
-        if (days <= 365) {
-          moneyDetails['details'][2]['income'] =
-              moneyDetails['details'][2]['income']! + newTran.amount!;
-        }
-        _incomeTransactions.add(newTran);
+            moneyDetails['total']['income'] + tran['amount'];
       }
-      _allTransactions.add(newTran);
+
+      _allTransactions.add(Transaction.fromMap(tran));
     }
+
     isLoading = false;
+
+    await Future.delayed(
+      const Duration(seconds: 2),
+    );
 
     update();
   }
@@ -240,7 +214,7 @@ class TransactionsController extends ChangeNotifier with DBFunctions {
     }
 
     Transaction newTransaction = Transaction.fromMap({
-      'date': date.millisecondsSinceEpoch,
+      'date': DateFormat('y-M-d').format(date),
       'amount': double.parse(amount.text.trim()),
       'category_id': categoryId,
       'name': categoryTitle,
@@ -249,63 +223,130 @@ class TransactionsController extends ChangeNotifier with DBFunctions {
       'note': note.text.trim().toLowerCase(),
     });
 
-    int tranId = -1;
+    final int rowId = await SqliteHelper.sqliteHelper.insertData(
+      AppDatabase.transactionsTable,
+      newTransaction.toMap(),
+    );
+
+    _allTransactions.add(newTransaction);
+
+    final DateTime currentDate = DateTime.now();
 
     if (tranType == 0) {
-      tranId = _expenseTransactions.indexWhere(
-        (element) => newTransaction.categoryId == element.categoryId,
-      );
+      moneyDetails['total']['expense'] =
+          moneyDetails['total']['expense'] + newTransaction.amount!;
+
+      if (currentDate.difference(date).inDays == 0) {
+        moneyDetails['details'][0]['expense'] =
+            moneyDetails['details'][0]['expense'] + newTransaction.amount!;
+        int index =
+            (_filterTransactions[0]['expense'] as List<Transaction>).indexWhere(
+          (element) => element.categoryName == newTransaction.categoryName,
+        );
+        if (index != -1) {
+          (_filterTransactions[0]['expense'] as List<Transaction>)[index]
+                  .amount =
+              (_filterTransactions[0]['expense'] as List<Transaction>)[index]
+                      .amount! +
+                  newTransaction.amount!;
+        } else {
+          (_filterTransactions[0]['expense'] as List).add(newTransaction);
+        }
+      }
+      if (currentDate.difference(date).inDays <= 30) {
+        moneyDetails['details'][1]['expense'] =
+            moneyDetails['details'][1]['expense'] + newTransaction.amount!;
+        int index =
+            (_filterTransactions[1]['expense'] as List<Transaction>).indexWhere(
+          (element) => element.categoryName == newTransaction.categoryName,
+        );
+        if (index != -1) {
+          (_filterTransactions[1]['expense'] as List<Transaction>)[index]
+                  .amount =
+              (_filterTransactions[1]['expense'] as List<Transaction>)[index]
+                      .amount! +
+                  newTransaction.amount!;
+        } else {
+          (_filterTransactions[1]['expense'] as List).add(newTransaction);
+        }
+      }
+      if (currentDate.difference(date).inDays <= 365) {
+        moneyDetails['details'][2]['expense'] =
+            moneyDetails['details'][2]['expense'] + newTransaction.amount!;
+        int index =
+            (_filterTransactions[2]['expense'] as List<Transaction>).indexWhere(
+          (element) => element.categoryName == newTransaction.categoryName,
+        );
+        if (index != -1) {
+          (_filterTransactions[2]['expense'] as List<Transaction>)[index]
+                  .amount =
+              (_filterTransactions[2]['expense'] as List<Transaction>)[index]
+                      .amount! +
+                  newTransaction.amount!;
+        } else {
+          (_filterTransactions[2]['expense'] as List).add(newTransaction);
+        }
+      }
     } else {
-      tranId = _incomeTransactions.indexWhere(
-        (element) => newTransaction.categoryId == element.categoryId,
-      );
+      moneyDetails['total']['income'] =
+          moneyDetails['total']['income'] + newTransaction.amount!;
+      if (currentDate.difference(date).inDays == 0) {
+        moneyDetails['details'][0]['income'] =
+            moneyDetails['details'][0]['income'] + newTransaction.amount!;
+        int index =
+            (_filterTransactions[0]['income'] as List<Transaction>).indexWhere(
+          (element) => element.categoryName == newTransaction.categoryName,
+        );
+        if (index != -1) {
+          (_filterTransactions[0]['income'] as List<Transaction>)[index]
+                  .amount =
+              (_filterTransactions[0]['income'] as List<Transaction>)[index]
+                      .amount! +
+                  newTransaction.amount!;
+        } else {
+          (_filterTransactions[0]['income'] as List).add(newTransaction);
+        }
+      }
+      if (currentDate.difference(date).inDays <= 30) {
+        moneyDetails['details'][1]['income'] =
+            moneyDetails['details'][1]['income'] + newTransaction.amount!;
+        int index =
+            (_filterTransactions[1]['income'] as List<Transaction>).indexWhere(
+          (element) => element.categoryName == newTransaction.categoryName,
+        );
+        if (index != -1) {
+          (_filterTransactions[1]['income'] as List<Transaction>)[index]
+                  .amount =
+              (_filterTransactions[1]['income'] as List<Transaction>)[index]
+                      .amount! +
+                  newTransaction.amount!;
+        } else {
+          (_filterTransactions[1]['income'] as List).add(newTransaction);
+        }
+      }
+      if (currentDate.difference(date).inDays <= 365) {
+        moneyDetails['details'][2]['income'] =
+            moneyDetails['details'][2]['income'] + newTransaction.amount!;
+        int index =
+            (_filterTransactions[2]['income'] as List<Transaction>).indexWhere(
+          (element) => element.categoryName == newTransaction.categoryName,
+        );
+        if (index != -1) {
+          (_filterTransactions[2]['income'] as List<Transaction>)[index]
+                  .amount =
+              (_filterTransactions[2]['income'] as List<Transaction>)[index]
+                      .amount! +
+                  newTransaction.amount!;
+        } else {
+          (_filterTransactions[2]['income'] as List).add(newTransaction);
+        }
+      }
     }
 
-    if (tranId == -1) {
-      final int rowId = await SqliteHelper.sqliteHelper.insertData(
-        AppDatabase.transactionsTable,
-        newTransaction.toMap(),
-      );
+    clearData();
 
-      allTransactions.add(newTransaction);
-
-      tranType == 0
-          ? _expenseTransactions.add(newTransaction)
-          : _incomeTransactions.add(newTransaction);
-
-      clearData();
-
-      update();
-      return rowId;
-    } else {
-      if (tranType == 0) {
-        newTransaction.amount =
-            newTransaction.amount! + _expenseTransactions[tranId].amount!;
-      } else {
-        newTransaction.amount =
-            newTransaction.amount! + _incomeTransactions[tranId].amount!;
-      }
-
-      final int rowId = await SqliteHelper.sqliteHelper.updateData(
-        AppDatabase.transactionsTable,
-        newTransaction.toMap(),
-        'category_id = ?',
-        [newTransaction.categoryId],
-      );
-
-      allTransactions.add(newTransaction);
-
-      if (tranType == 0) {
-        _expenseTransactions[tranId] = newTransaction;
-      } else {
-        _incomeTransactions[tranId] = newTransaction;
-      }
-
-      clearData();
-
-      update();
-      return rowId;
-    }
+    update();
+    return rowId;
   }
 
   @override

@@ -37,24 +37,26 @@ class AddTransactionForm extends StatelessWidget {
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 10),
-          Consumer<TransactionsController>(builder: (context, value, child) {
-            bool isSelected = true;
-            if (value.categoryTitle.contains('Not Selected')) {
-              isSelected = false;
-            }
+          Consumer<TransactionsController>(
+            builder: (context, value, child) {
+              bool isSelected = true;
+              if (value.categoryTitle.contains('Not Selected')) {
+                isSelected = false;
+              }
 
-            return SelectTextField(
-              onTap: () {
-                navigator.pushNamed(
-                  AppRoutes.categories,
-                  arguments: {'status': 'select'},
-                );
-              },
-              title: 'Category',
-              choice: value.categoryTitle,
-              isSelected: isSelected,
-            );
-          }),
+              return SelectTextField(
+                onTap: () {
+                  navigator.pushNamed(
+                    AppRoutes.categories,
+                    arguments: {'status': 'select'},
+                  );
+                },
+                title: 'Category',
+                choice: value.categoryTitle,
+                isSelected: isSelected,
+              );
+            },
+          ),
           const SizedBox(height: 10),
           CustomNoteField(
             controller: provider.note,

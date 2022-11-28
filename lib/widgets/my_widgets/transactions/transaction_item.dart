@@ -8,7 +8,8 @@ class TransactionItem extends StatelessWidget {
   final String title;
   final String icon;
   final double amount;
-  final int date;
+  final String date;
+  final String note;
   final int mode;
   final String code;
 
@@ -18,6 +19,7 @@ class TransactionItem extends StatelessWidget {
       required this.amount,
       required this.date,
       required this.mode,
+      required this.note,
       required this.code,
       super.key});
 
@@ -28,13 +30,23 @@ class TransactionItem extends StatelessWidget {
         icon,
         width: 30,
       ),
-      title: CustomText(
-        text: title,
-        fontWeight: FontWeight.w600,
+      title: Row(
+        children: [
+          CustomText(
+            text: title,
+            fontWeight: FontWeight.w600,
+          ),
+          if (note.isNotEmpty)
+            CustomText(
+              text:
+                  ' ( ${note[0].toUpperCase() + note.substring(1, note.length)} )',
+              fontSize: 13,
+              color: Colors.grey.shade400,
+            )
+        ],
       ),
       subtitle: CustomText(
-        text: DateFormat('d MMM yyyy')
-            .format(DateTime.fromMillisecondsSinceEpoch(date)),
+        text: DateFormat('d MMM yyyy').format(DateTime.tryParse(date)!),
         fontSize: 13,
         color: Colors.grey.shade400,
       ),

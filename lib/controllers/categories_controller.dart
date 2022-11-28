@@ -18,7 +18,6 @@ class CategoriesController extends ChangeNotifier with DBFunctions {
   int tranType = 0;
 
   List<Category> _categories = [];
-  List<Category> _copyCategories = [];
 
   List<Category> get categories => _categories
       .where((element) => element.transactionType == tranType)
@@ -35,10 +34,6 @@ class CategoriesController extends ChangeNotifier with DBFunctions {
   void filterCategories(int indexTranType) {
     tranType = indexTranType;
 
-    _copyCategories = _categories
-        .where((element) => element.transactionType == indexTranType)
-        .toList();
-
     notifyListeners();
   }
 
@@ -52,9 +47,6 @@ class CategoriesController extends ChangeNotifier with DBFunctions {
     for (var category in result) {
       _categories.add(Category.fromMap(category));
     }
-
-    _copyCategories =
-        _categories.where((element) => element.transactionType == 0).toList();
 
     return _categories;
   }

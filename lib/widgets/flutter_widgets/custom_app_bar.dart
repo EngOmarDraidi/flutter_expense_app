@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:second_project/core/constant/app_colors.dart';
 import 'package:second_project/widgets/flutter_widgets/custom_container.dart';
 
@@ -33,7 +34,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         leading: leading,
         leadingWidth: 80,
         bottom: bottom,
-        title: Text(title),
+        title: Text(title).tr(),
       ),
     );
   }

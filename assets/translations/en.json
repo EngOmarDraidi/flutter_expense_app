@@ -1,0 +1,9 @@
+{
+    "dashboard":"dashboard",
+    "expense":"expense",
+    "income":"income",
+    "balance":"balance",
+    "daily":"daily",
+    "monthly":"monthly",
+    "yearly":"yearly"
+}

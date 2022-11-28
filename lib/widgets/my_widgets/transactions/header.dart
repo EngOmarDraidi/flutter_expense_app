@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:second_project/controllers/calendar_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:second_project/controllers/transactions_controller.dart';
+import '../../../controllers/calendar_controller.dart';
 import '../../../widgets/flutter_widgets/custom_container.dart';
 import '../../../core/constant/app_colors.dart';
 import '../../../core/constant/app_icons.dart';
@@ -13,7 +14,8 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CalendarController>(builder: (context, provider, child) {
+    return Consumer2<CalendarController, TransactionsController>(
+        builder: (context, calendarProvider, transProvider, child) {
       return CustomContainer(
         color: const Color(0xffe1e0f2),
         child: Row(
@@ -21,27 +23,33 @@ class Header extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () {
-                provider.changeTransactionFilterDate(-1);
+                calendarProvider.changeTransactionFilterDate(-1);
+                // transProvider.filterTransactionScreen(
+                //     calendarProvider.transactionFilterDate);
               },
               icon: SvgPicture.asset(
-                AppIcons.backArrowIcon,
+                context.locale.languageCode == 'ar'
+                    ? AppIcons.forwardArrowIcon
+                    : AppIcons.backArrowIcon,
                 width: 17,
                 color: AppColors.primaryColor,
               ),
             ),
             CustomText(
               text: DateFormat('MMM. yyyy')
-                  .format(provider.transactionFilterDate),
+                  .format(calendarProvider.transactionFilterDate),
               fontSize: 20,
               fontWeight: FontWeight.w500,
               color: AppColors.primaryColor,
             ),
             IconButton(
               onPressed: () {
-                provider.changeTransactionFilterDate(1);
+                calendarProvider.changeTransactionFilterDate(1);
               },
               icon: SvgPicture.asset(
-                AppIcons.forwardArrowIcon,
+                context.locale.languageCode == 'ar'
+                    ? AppIcons.backArrowIcon
+                    : AppIcons.forwardArrowIcon,
                 width: 17,
                 color: AppColors.primaryColor,
               ),

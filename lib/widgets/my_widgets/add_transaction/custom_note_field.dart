@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:second_project/controllers/transactions_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../../../controllers/transactions_controller.dart';
 import '../../../core/constant/app_colors.dart';
 import '../../flutter_widgets/custom_container.dart';
 import '../../flutter_widgets/custom_text.dart';
@@ -39,7 +40,7 @@ class CustomNoteField extends StatelessWidget {
                 controller: provider.note,
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
-                  hintText: 'Enter Note',
+                  hintText: 'Enter Note'.tr(),
                   hintStyle: TextStyle(color: Colors.grey.shade400),
                   border: const OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -62,8 +63,8 @@ class CustomNoteField extends StatelessWidget {
                   provider.note.clear();
                   navigator.pop();
                 },
-                child: const CustomText(
-                  text: 'Cancel',
+                child: CustomText(
+                  text: 'Cancel'.tr(),
                   color: AppColors.primaryColor,
                 ),
               ),
@@ -75,8 +76,8 @@ class CustomNoteField extends StatelessWidget {
                   provider.update();
                   navigator.pop();
                 },
-                child: const CustomText(
-                  text: 'Add',
+                child: CustomText(
+                  text: 'Add'.tr(),
                   color: AppColors.primaryColor,
                 ),
               ),

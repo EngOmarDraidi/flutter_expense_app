@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../controllers/categories_controller.dart';
 import '../core/constant/app_icons.dart';
 import '../core/constant/app_colors.dart';
@@ -23,14 +24,14 @@ class CategoriesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: CustomAppBar(
-        title: 'Categories',
+        title: 'Categories'.tr(),
         leading: status != null
             ? TextButton(
                 onPressed: () {
                   navigator.pop();
                 },
-                child: const CustomText(
-                  text: 'Back',
+                child: CustomText(
+                  text: 'Back'.tr(),
                   color: Colors.white,
                   fontSize: 18,
                 ),
@@ -57,15 +58,16 @@ class CategoriesScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Consumer<CategoriesController>(
-                  builder: (context, provider, child) {
-                return CustomTapBar(
-                  listOfTab: const ['Expense', 'Income'],
-                  tapValue: provider.tranType,
-                  onTap: (value) {
-                    provider.filterCategories(value);
-                  },
-                );
-              }),
+                builder: (context, provider, child) {
+                  return CustomTapBar(
+                    listOfTab: const ['Expense', 'Income'],
+                    tapValue: provider.tranType,
+                    onTap: (value) {
+                      provider.filterCategories(value);
+                    },
+                  );
+                },
+              ),
             ),
           CategoriesList(
             status: status,

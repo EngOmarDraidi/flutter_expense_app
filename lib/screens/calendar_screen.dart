@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../controllers/calendar_controller.dart';
 import '../controllers/transactions_controller.dart';
@@ -23,19 +24,19 @@ class CalendarScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const CustomText(
-            text: 'Cancel',
+          child: CustomText(
+            text: 'Cancel'.tr(),
             color: Colors.white,
             fontSize: 18,
           ),
         ),
-        title: 'Celender',
+        title: 'Calendar'.tr(),
       ),
       body: Column(
         children: [
           TableCalendar(
             firstDay: DateTime.utc(DateTime.now().year - 2),
-            lastDay: DateTime.utc(DateTime.now().year + 2),
+            lastDay: DateTime.now(),
             focusedDay: DateTime.now(),
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: CalendarStyle(

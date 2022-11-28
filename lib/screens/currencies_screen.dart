@@ -1,31 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:second_project/controllers/currencies_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../controllers/currencies_controller.dart';
 import '../core/constant/app_colors.dart';
+import '../core/constant/data.dart';
+import '../models/model/currency.dart';
 import '../widgets/flutter_widgets/custom_app_bar.dart';
 import '../widgets/flutter_widgets/custom_container.dart';
 import '../widgets/flutter_widgets/custom_text.dart';
+import '../widgets/my_widgets/currenies/search_text_field.dart';
 import '../widgets/my_widgets/currenies/currencies_list.dart';
 
-class CurrenciesScreen extends StatelessWidget {
+final List<Currency> listOfCurrenciesObjects = [];
+
+void getCurrencies() {
+  for (var currency in listOfCurrencies) {
+    listOfCurrenciesObjects.add(
+      Currency.fromJSON(
+        {
+          'code': currency.keys.first,
+          'country': currency.values.first,
+        },
+      ),
+    );
+  }
+}
+
+class CurrenciesScreen extends StatefulWidget {
   final PageController? pageController;
 
   const CurrenciesScreen({this.pageController, super.key});
+
+  @override
+  State<CurrenciesScreen> createState() => _CurrenciesScreenState();
+}
+
+class _CurrenciesScreenState extends State<CurrenciesScreen> {
+  List<Currency> copyList = [];
+
+  @override
+  initState() {
+    super.initState();
+    getCurrencies();
+    copyList = listOfCurrenciesObjects;
+  }
+
+  search(String value) {
+    copyList = listOfCurrenciesObjects
+        .where(
+          (element) =>
+              element.code.toString().toLowerCase().contains(
+                    value.toLowerCase(),
+                  ) ||
+              element.country.toString().toLowerCase().contains(
+                    value.toLowerCase(),
+                  ),
+        )
+        .toList();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        title: 'Currency',
+        title: 'Currency'.tr(),
         leading: TextButton(
           onPressed: () {
-            pageController!.animateToPage(3,
+            widget.pageController!.animateToPage(3,
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.linear);
           },
-          child: const CustomText(
-            text: 'Back',
+          child: CustomText(
+            text: 'Back'.tr(),
             color: Colors.white,
             fontSize: 18,
           ),
@@ -35,12 +83,12 @@ class CurrenciesScreen extends StatelessWidget {
             onPressed: () {
               Provider.of<CurrenciesController>(context, listen: false)
                   .changeCurrency();
-              pageController!.animateToPage(3,
+              widget.pageController!.animateToPage(3,
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.linear);
             },
-            child: const CustomText(
-              text: 'Save',
+            child: CustomText(
+              text: 'Save'.tr(),
               color: Colors.white,
               fontSize: 18,
             ),
@@ -53,23 +101,11 @@ class CurrenciesScreen extends StatelessWidget {
             height: 55,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             color: AppColors.secondaryColor,
-            child: TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                ),
-                contentPadding: const EdgeInsets.only(bottom: 5),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+            child: SearchTextField(
+              onChanged: search,
             ),
           ),
-          const CurrenciesList(),
+          CurrenciesList(copyList: copyList),
         ],
       ),
     );

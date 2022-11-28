@@ -2,32 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../controllers/currencies_controller.dart';
 import '../../../models/model/currency.dart';
-import '../../../core/constant/data.dart';
 import 'currency_item.dart';
 
-List<Currency> listOfCurrencies = [];
-
-getCurrencies() async {
-  currencies.forEach((key, value) {
-    listOfCurrencies.add(Currency.fromJSON({'code': key, 'country': value}));
-  });
-}
-
-class CurrenciesList extends StatefulWidget {
-  const CurrenciesList({super.key});
-
-  @override
-  State<CurrenciesList> createState() => _CurrenciesListState();
-}
-
-class _CurrenciesListState extends State<CurrenciesList> {
-  int? indexCode;
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrencies();
-  }
+class CurrenciesList extends StatelessWidget {
+  final List<Currency> copyList;
+  const CurrenciesList({required this.copyList, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,18 +19,17 @@ class _CurrenciesListState extends State<CurrenciesList> {
         itemBuilder: (context, index) {
           return CurrencyItem(
             index: index,
-            code: listOfCurrencies[index].code!,
-            country: listOfCurrencies[index].country!,
+            code: copyList[index].code!,
+            country: copyList[index].country!,
             onTap: () async {
-              await provider
-                  .changeCurrencySelected(listOfCurrencies[index].code!);
+              await provider.changeCurrencySelected(copyList[index].code!);
             },
           );
         },
         separatorBuilder: (context, index) => const Divider(
           thickness: 0.5,
         ),
-        itemCount: listOfCurrencies.length,
+        itemCount: copyList.length,
       ),
     );
   }

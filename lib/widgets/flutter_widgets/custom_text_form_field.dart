@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import '../../core/constant/app_colors.dart';
 import 'custom_container.dart';
 import 'custom_text.dart';
@@ -23,22 +24,26 @@ class CustomTextFormField extends StatelessWidget {
       child: Row(
         children: [
           CustomText(
-            text: title,
+            text: title.tr(),
             color: AppColors.primaryColor,
             fontSize: 15,
           ),
           Expanded(
             child: TextFormField(
               controller: textEditingController,
-              textDirection: TextDirection.rtl,
+              textDirection: context.locale.languageCode == 'ar'
+                  ? TextDirection.ltr
+                  : TextDirection.rtl,
               keyboardType: keyboardType,
               decoration: InputDecoration(
-                hintText: title,
+                hintText: title.tr(),
                 hintStyle: TextStyle(
                   color: Colors.grey.withOpacity(0.6),
                   fontSize: 14,
                 ),
-                hintTextDirection: TextDirection.rtl,
+                hintTextDirection: context.locale.languageCode == 'ar'
+                    ? TextDirection.ltr
+                    : TextDirection.rtl,
                 border: const OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),

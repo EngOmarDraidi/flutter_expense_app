@@ -12,7 +12,6 @@ class CurrenciesController extends ChangeNotifier {
   }
 
   Future<void> changeCurrency() async {
-    print(currencySelected);
     code = currencySelected;
     await SharedPreferencesApp.sharedPreferencesApp
         .setData('currency_code', currencySelected!);
@@ -20,7 +19,8 @@ class CurrenciesController extends ChangeNotifier {
   }
 
   void getCurrency() {
-    currencySelected = code = SharedPreferencesApp.sharedPreferencesApp
-        .getDate('currency_code') as String;
+    currencySelected = code =
+        SharedPreferencesApp.sharedPreferencesApp.getDate('currency_code') ??
+            'USD';
   }
 }
