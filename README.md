@@ -33,3 +33,5 @@ To run on emulator or real device
   - jiffy: [link](https://pub.dev/packages/jiffy)
   - shared_preferences: [link](https://pub.dev/packages/shared_preferences)
   - easy_localization: [link](https://pub.dev/packages/easy_localization)
+
+**Video preview of project:** [link](https://www.linkedin.com/posts/engomardraidi_flutter-flutter-appdevelopment-activity-7025816696376410112-Db0l?utm_source=share&utm_medium=member_desktop)
