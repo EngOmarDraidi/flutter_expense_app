@@ -1,16 +1,35 @@
-# second_project
+# Expense App
 
-A new Flutter project.
+This App to manage your expense and income money, that app can run on Android and IOS because it builds with Flutter, I build simple and intuitive UI, helps you to easily manage your spending
 
-## Getting Started
+## To Run Locally
 
-This project is a starting point for a Flutter application.
+Clone the project
 
-A few resources to get you started if this is your first Flutter project:
+```batch
+  git clone https://github.com/EngOmarDraidi/flutter_expense_app.git
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Go to project folder
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```batch
+  cd flutter_expense_app
+```
+
+To run on emulator or real device
+
+```batch
+  flutter run Or ctrl + fn + F5
+```
+
+** Packages I am using: **
+  - flutter_screenutil: [link](https://pub.dev/packages/flutter_screenutil)
+  - flutter_svg: [link](https://pub.dev/packages/flutter_svg)
+  - http: [link](https://pub.dev/packages/http)
+  - sqflite: [link](https://pub.dev/packages/sqflite)
+  - table_calendar: [link](https://pub.dev/packages/table_calendar)
+  - provider: [link](https://pub.dev/packages/provider)
+  - intl: [link](https://pub.dev/packages/intl)
+  - jiffy: [link](https://pub.dev/packages/jiffy)
+  - shared_preferences: [link](https://pub.dev/packages/shared_preferences)
+  - easy_localization: [link](https://pub.dev/packages/easy_localization)
