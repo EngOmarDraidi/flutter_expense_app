@@ -11,6 +11,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final Widget? leading;
   final PreferredSizeWidget? bottom;
   final List<Widget>? actions;
+  final VoidCallback? voidCallback;
 
   const CustomAppBar({
     required this.title,
@@ -20,6 +21,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     this.leading,
     this.actions,
     this.bottom,
+    this.voidCallback,
     super.key,
   });
 

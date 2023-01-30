@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:second_project/controllers/calendar_controller.dart';
 import 'package:second_project/models/model/transaction.dart';
@@ -59,10 +61,11 @@ class TransactionsScreen extends StatelessWidget {
 
         final List<Transaction> listOfTransactions =
             provider.allTransactions.where((element) {
-          if (calendarProvider.transactionFilterDate.month ==
-                  DateTime.tryParse(element.date!)!.month &&
-              calendarProvider.transactionFilterDate.year ==
-                  DateTime.tryParse(element.date!)!.year) {
+          DateTime date =
+              DateTime.fromMillisecondsSinceEpoch(int.tryParse(element.date!)!);
+
+          if (calendarProvider.transactionFilterDate.month == date.month &&
+              calendarProvider.transactionFilterDate.year == date.year) {
             if (element.tranType == 0) {
               moneyDetails['expense'] =
                   moneyDetails['expense']! + element.amount!;
@@ -89,11 +92,13 @@ class TransactionsScreen extends StatelessWidget {
                 itemBuilder: (context, index) => Dismissible(
                   key: UniqueKey(),
                   background: CustomContainer(
-                    onTap: () => navigator.pushNamed(AppRoutes.addTransaction,
-                        arguments: {
-                          'mode': 'update',
-                          'data': listOfTransactions[index]
-                        }),
+                    onTap: () => navigator.pushNamed(
+                      AppRoutes.addTransaction,
+                      arguments: {
+                        'mode': 'update',
+                        'data': listOfTransactions[index]
+                      },
+                    ),
                     margin: const EdgeInsets.only(bottom: 20),
                     padding: const EdgeInsets.only(right: 20),
                     color: Colors.red.shade100,
@@ -117,7 +122,7 @@ class TransactionsScreen extends StatelessWidget {
                         title: listOfTransactions[index].categoryName!,
                         icon: listOfTransactions[index].categoryIcon!,
                         amount: listOfTransactions[index].amount! as double,
-                        date: listOfTransactions[index].date!,
+                        date: int.tryParse(listOfTransactions[index].date!)!,
                         mode: listOfTransactions[index].tranType! as int,
                         note: listOfTransactions[index].note!,
                         code: Provider.of<CurrenciesController>(context)

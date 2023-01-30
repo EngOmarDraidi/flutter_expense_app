@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import '../../core/constant/app_db.dart';
 import '../core/functions/functions.dart';
@@ -214,7 +215,7 @@ class TransactionsController extends ChangeNotifier with DBFunctions {
     }
 
     Transaction newTransaction = Transaction.fromMap({
-      'date': DateFormat('y-M-d').format(date),
+      'date': date.millisecondsSinceEpoch.toString(),
       'amount': double.parse(amount.text.trim()),
       'category_id': categoryId,
       'name': categoryTitle,

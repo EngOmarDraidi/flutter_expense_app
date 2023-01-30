@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,7 @@ class TransactionItem extends StatelessWidget {
   final String title;
   final String icon;
   final double amount;
-  final String date;
+  final int date;
   final String note;
   final int mode;
   final String code;
@@ -46,7 +47,11 @@ class TransactionItem extends StatelessWidget {
         ],
       ),
       subtitle: CustomText(
-        text: DateFormat('d MMM yyyy').format(DateTime.tryParse(date)!),
+        text: DateFormat.yMMMd(
+                context.locale.languageCode != 'ar' ? 'en_USA' : 'ar_SA')
+            .format(
+          DateTime.fromMillisecondsSinceEpoch(date),
+        ),
         fontSize: 13,
         color: Colors.grey.shade400,
       ),

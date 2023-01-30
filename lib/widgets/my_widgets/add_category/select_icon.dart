@@ -17,7 +17,10 @@ class SelectIcon extends StatelessWidget {
     final NavigatorState navigator = Navigator.of(context);
 
     return CustomContainer(
-      onTap: () => navigator.pushNamed(AppRoutes.icons),
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        navigator.pushNamed(AppRoutes.icons);
+      },
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 22,

@@ -27,5 +27,12 @@
     "Name":"الاسم",
     "Icon":"أيقونة",
     "Icons":"أيقونات",
-    "Calendar": "التقويم"
+    "Calendar": "التقويم",
+    "Add": "إضافة",
+    "Error": "الإدخال غير صحيح",
+    "Ok": "حسناً",
+    "Amount and Category not be entered": "يجب إدخال الفئة ومقدار المال",
+    "Category not be entered": "يجب إدخال الفئة",
+    "Amount not be entered": "يجب إدخال مقدار المال",
+    "Name not be entered": "يجب إدخال الاسم"
 }

@@ -36,7 +36,8 @@ class Header extends StatelessWidget {
               ),
             ),
             CustomText(
-              text: DateFormat('MMM. yyyy')
+              text: DateFormat.yMMM(
+                      context.locale.languageCode != 'ar' ? 'en_USA' : 'ar_SA')
                   .format(calendarProvider.transactionFilterDate),
               fontSize: 20,
               fontWeight: FontWeight.w500,

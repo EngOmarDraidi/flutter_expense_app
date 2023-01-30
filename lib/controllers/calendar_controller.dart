@@ -9,11 +9,16 @@ class CalendarController extends ChangeNotifier {
   changeTransactionFilterDate(int index) {
     transactionFilterDate =
         Jiffy(transactionFilterDate).add(months: index).dateTime;
+    print(transactionFilterDate);
     notifyListeners();
   }
 
   changeData(DateTime day) {
     selectedDay = day;
+    notifyListeners();
+  }
+
+  updateCalender() {
     notifyListeners();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/constant/app_colors.dart';
@@ -16,7 +17,7 @@ class SectionTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomText(
-          text: title,
+          text: title.tr(),
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),

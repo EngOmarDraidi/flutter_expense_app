@@ -34,49 +34,54 @@ class CalendarScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          TableCalendar(
-            firstDay: DateTime.utc(DateTime.now().year - 2),
-            lastDay: DateTime.now(),
-            focusedDay: DateTime.now(),
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Colors.red.shade700,
-                shape: BoxShape.circle,
-              ),
-              selectedDecoration: BoxDecoration(
-                color: Colors.blue.shade700,
-                shape: BoxShape.circle,
-              ),
-            ),
-            headerStyle: const HeaderStyle(
-              titleCentered: true,
-              formatButtonVisible: false,
-              leftChevronIcon: Icon(
-                Icons.chevron_left,
-                color: AppColors.primaryColor,
-              ),
-              rightChevronIcon: Icon(
-                Icons.chevron_right,
-                color: AppColors.primaryColor,
-              ),
-              formatButtonTextStyle: TextStyle(
-                color: AppColors.primaryColor,
-              ),
-              titleTextStyle: TextStyle(
-                color: AppColors.primaryColor,
-                fontSize: 17,
-              ),
-            ),
-            daysOfWeekStyle: const DaysOfWeekStyle(
-              weekdayStyle: TextStyle(color: AppColors.primaryColor),
-              weekendStyle: TextStyle(color: AppColors.primaryColor),
-            ),
-            selectedDayPredicate: (day) => isSameDay(provider.selectedDay, day),
-            onDaySelected: (selectedDay, focusedDay) {
-              provider.changeData(selectedDay);
-              tranProvider.date = provider.selectedDay;
-              Navigator.of(context).pop();
+          Consumer<CalendarController>(
+            builder: (context, _, __) {
+              return TableCalendar(
+                firstDay: DateTime.utc(DateTime.now().year - 2),
+                lastDay: DateTime.now(),
+                focusedDay: DateTime.now(),
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  todayDecoration: BoxDecoration(
+                    color: Colors.red.shade700,
+                    shape: BoxShape.circle,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    color: Colors.blue.shade700,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                headerStyle: const HeaderStyle(
+                  titleCentered: true,
+                  formatButtonVisible: false,
+                  leftChevronIcon: Icon(
+                    Icons.chevron_left,
+                    color: AppColors.primaryColor,
+                  ),
+                  rightChevronIcon: Icon(
+                    Icons.chevron_right,
+                    color: AppColors.primaryColor,
+                  ),
+                  formatButtonTextStyle: TextStyle(
+                    color: AppColors.primaryColor,
+                  ),
+                  titleTextStyle: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontSize: 17,
+                  ),
+                ),
+                daysOfWeekStyle: const DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(color: AppColors.primaryColor),
+                  weekendStyle: TextStyle(color: AppColors.primaryColor),
+                ),
+                selectedDayPredicate: (day) =>
+                    isSameDay(provider.selectedDay, day),
+                onDaySelected: (selectedDay, focusedDay) {
+                  provider.changeData(selectedDay);
+                  tranProvider.date = provider.selectedDay;
+                  Navigator.of(context).pop();
+                },
+              );
             },
           ),
         ],

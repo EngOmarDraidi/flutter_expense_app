@@ -24,7 +24,10 @@ class AddTransactionForm extends StatelessWidget {
         children: [
           Consumer<CalendarController>(
             builder: (context, value, child) => SelectTextField(
-              onTap: () => navigator.pushNamed(AppRoutes.calendar),
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                navigator.pushNamed(AppRoutes.calendar);
+              },
               title: 'Date',
               choice: DateFormat('d MMM yyyy').format(value.selectedDay),
               isSelected: true,
@@ -46,6 +49,7 @@ class AddTransactionForm extends StatelessWidget {
 
               return SelectTextField(
                 onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   navigator.pushNamed(
                     AppRoutes.categories,
                     arguments: {'status': 'select'},

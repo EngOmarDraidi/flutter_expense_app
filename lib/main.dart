@@ -83,6 +83,7 @@ class MaterialWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Expense App',
       debugShowCheckedModeBanner: false,
       navigatorKey: AppState.navigatorKey,
       localizationsDelegates: context.localizationDelegates,

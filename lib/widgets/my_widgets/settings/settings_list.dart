@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:second_project/controllers/calendar_controller.dart';
 import '../../../controllers/main_screen_controller.dart';
 import '../../../controllers/currencies_controller.dart';
 import '../../../widgets/flutter_widgets/custom_container.dart';
@@ -9,8 +10,10 @@ import 'settings_item.dart';
 
 class SettingsList extends StatelessWidget {
   final PageController pageController;
+  final VoidCallback? voidCallback;
 
-  const SettingsList({required this.pageController, super.key});
+  const SettingsList(
+      {required this.pageController, this.voidCallback, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +43,10 @@ class SettingsList extends StatelessWidget {
                       context.setLocale(const Locale('ar'));
                       Provider.of<MainScreenController>(context, listen: false)
                           .update();
+                      Provider.of<CalendarController>(context, listen: false)
+                          .updateCalender();
                     }
+                    voidCallback;
                     Navigator.of(context).pop();
                   },
                   child: const Text('العربية'),
@@ -51,6 +57,8 @@ class SettingsList extends StatelessWidget {
                       context.setLocale(const Locale('en'));
                       Provider.of<MainScreenController>(context, listen: false)
                           .update();
+                      Provider.of<CalendarController>(context, listen: false)
+                          .updateCalender();
                     }
                     Navigator.of(context).pop();
                   },
